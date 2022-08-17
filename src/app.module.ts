@@ -14,12 +14,17 @@ import { SponzorService } from './sponzor/sponzor.service';
 import { UsersService } from './user/users.service';
 import { MyTeamController } from './my-team/my-team.controller';
 import { MyTeamModule } from './my-team/my-team.module';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthController } from './auth/auth.controller';
+import { JwtStrategy } from './auth/jtw.strategy';
 
 
 
 @Module({
-  imports: [UserModule,TypeOrmModule.forRoot(typeOrmConfig), PlayersModule, SponzorModule, MyTeamModule],
-  controllers: [AppController, MyTeamController],
-  providers: [AppService],
+  imports: [UserModule,TypeOrmModule.forRoot(typeOrmConfig), PlayersModule, SponzorModule, MyTeamModule, AuthModule,JwtModule],
+  controllers: [AppController, MyTeamController,AuthController],
+  providers: [AppService, AuthService,JwtStrategy],
 })
 export class AppModule {}
