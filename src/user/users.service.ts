@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
@@ -12,13 +13,23 @@ export class UsersService {
     async CreateUser(UserDto:UserDto)//:Promise<UserDto | undefined>
     {
         const {username, password, email } = UserDto
-
+       
         if(username.length == 0 || password.length == 0|| email.length == 0)
         throw new Error("Nisu dostupni svi podaci!");
 
         if(await this.UserRepo.findOne({where:{email}}) || await this.UserRepo.findOne({where:{username}}))
         throw new Error("Uneseni podaci se vec koriste!");
-  
+
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hash = await bcrypt.hash(UserDto.password, salt);
+
+        const NewUser = new User();
+        NewUser.username = username;
+        NewUser.email = email
+        NewUser.password = hash;
+        NewUser.money = 6000;
+        return await this.UserRepo.save(NewUser);   
     }
 
     async TEST(@Body() UserDto: UserDto)
@@ -39,6 +50,11 @@ export class UsersService {
       
       return user;
   }
+
+  async FindMyProfile(email: string) {
+     const {password , ... data}= await this.FindUser(email);
+     return data;
+}
 
   
 }

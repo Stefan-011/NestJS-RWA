@@ -9,7 +9,7 @@ import { UsersService } from './users.service';
 @Controller('user')
 export class UsersController {
 
-    constructor(private readonly userService:UsersService)
+    constructor(private readonly UserService:UsersService)
     {
 
     }
@@ -17,15 +17,25 @@ export class UsersController {
     public wat(@Body() UserDto: UserDto)
     {
         
-         return this.userService.TEST(UserDto);
+         return this.UserService.TEST(UserDto);
     }
     @UseGuards(JwtAuthGuard)
     @Get('TEST')
     public w()
     {
         
-         return this.userService.FindUser("admin@gmail.com")
+         return this.UserService.FindUser("admin@gmail.com")
     }
+
+    
+    @UseGuards(JwtAuthGuard)
+    @Get('GetMyProfile')
+    public GetMyProfile(@Request() req)
+    {
+        if(req)
+        return this.UserService.FindMyProfile(req.user.email)
+    }
+
     
     
 

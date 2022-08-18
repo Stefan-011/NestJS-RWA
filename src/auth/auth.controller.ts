@@ -21,6 +21,13 @@ export class AuthController {
        return this.AuthService.login(req.user);
     }
 
+    
+    @Post('register')
+    async register(@Body() UserDto: UserDto)
+    {   
+       return this.AuthService.register(UserDto);
+    }
+
   
     @UseGuards(JwtAuthGuard)
     @Get('TEST')
@@ -28,6 +35,15 @@ export class AuthController {
     {
       //  return this.LS.validate("admin@gmail.com","admin");
         return this.AuthService.validateUser("admin@gmail.com","admin")
+    }
+
+  
+    @Get('sifra')
+    async z(@Body() pass:string)
+    {
+     return this.AuthService.Test(pass);
+      //  return this.LS.validate("admin@gmail.com","admin");
+        //return this.AuthService.validateUser("admin@gmail.com","admin")
     }
 }
 

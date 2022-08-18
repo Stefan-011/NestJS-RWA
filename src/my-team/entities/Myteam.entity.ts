@@ -11,10 +11,11 @@ export class MyTeam{
     @Column({ type: 'text', nullable: false, unique: true })
     name:string;
 
-    @ManyToOne(type=>Sponzor, Sponzor => Sponzor.MyTeam , )
+    @ManyToOne(type=>Sponzor, Sponzor => Sponzor.MyTeam )
+    @JoinColumn()
     MySponzor: Sponzor
 
-    @OneToMany(type=>Players, Players => Players.MyTeam , )
+    @OneToMany(type=>Players, Players => Players.MyTeam )
     MyPlayers: Players[];
 
     @OneToOne(type=>User , User => User.MyTeam)
