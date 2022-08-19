@@ -28,4 +28,6 @@ export class PlayersController {
         id = id.substring(1,id.length);
        return this.PlayersService.GetPlayerByID(parseInt(id))
     }
+
+    
 }

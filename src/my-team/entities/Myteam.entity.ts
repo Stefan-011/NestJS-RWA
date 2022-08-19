@@ -12,7 +12,6 @@ export class MyTeam{
     name:string;
 
     @ManyToOne(type=>Sponzor, Sponzor => Sponzor.MyTeam )
-    @JoinColumn()
     MySponzor: Sponzor
 
     @OneToMany(type=>Players, Players => Players.MyTeam )

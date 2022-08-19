@@ -24,8 +24,9 @@ export class MyTeamService {
        
         const team = await this.MyteamRepo.findOne({where:{Owner:MeOwner}})
         const players = await this.PlayerRepo.find({where:{MyTeam:team}})
+        const sponzor = await this.SponzorRepo.findOne({where:{MyTeam:team}})
          return{
-           //team, ovde treba sponzor
+          sponzor,
            players
          }
        // if(!MeOwner.MyTeam)
@@ -39,19 +40,23 @@ export class MyTeamService {
       }
 
 
-    async AddSponzor(TeamID:number,SponzorID:number)
+    async AddSponzor(UserID:number,SponzorID:number)
     {
-      const Team = await this.MyteamRepo.findOne({where:{id:TeamID},relations:["MySponzor"]})
+      const Owner = await this.UserRepo.findOne({where:{id:UserID}})
+      const Team = await this.MyteamRepo.findOne({where:{Owner:Owner},relations:["MySponzor"]})
       const Sponzor = await this.SponzorRepo.findOne({where:{id:SponzorID}})
-        Team.MySponzor = Sponzor;
-      await this.MyteamRepo.save(Team)
+      Team.MySponzor = Sponzor;
+       await this.MyteamRepo.save(Team)
+       return Sponzor;
     }
 
-    async RemoveSponzor(TeamID:number,SponzorID:number)
+    async RemoveSponzor(UserID:number)
     {
-      const Team = await this.MyteamRepo.findOne({where:{id:TeamID}})
-        Team.MySponzor = null;
+      const Owner = await this.UserRepo.findOne({where:{id:UserID}})
+      const Team = await this.MyteamRepo.findOne({where:{Owner:Owner}})
+      Team.MySponzor = null;
       await this.MyteamRepo.save(Team)
+      return true;
     }
 
     async AddPlayer(OwnerID:number,PlayerId:number)

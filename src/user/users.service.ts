@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt'
+import { REFUSED } from 'dns';
 
 @Injectable()
 export class UsersService {
@@ -54,6 +55,15 @@ export class UsersService {
   async FindMyProfile(email: string) {
      const {password , ... data}= await this.FindUser(email);
      return data;
+}
+
+async SaveChanges(id:number,money:number)
+{
+  money = parseInt((money+"").substring(1,(money+"").length));
+ const USER = await this.UserRepo.findOne({where:{id:id}})
+ USER.money = money;
+ return await this.UserRepo.save(USER);
+
 }
 
   

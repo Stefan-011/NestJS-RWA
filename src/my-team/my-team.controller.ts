@@ -28,7 +28,7 @@ export class MyTeamController {
 
     @UseGuards(JwtAuthGuard)
     @Delete('RemovePlayer:id')
-    async RemovePlayer(@Request() req , @Param('id') id:string)
+    public RemovePlayer(@Request() req , @Param('id') id:string)
     {
         id = id.substring(1,id.length)
         if(req)
@@ -36,13 +36,22 @@ export class MyTeamController {
     }
 
 
-
+    @UseGuards(JwtAuthGuard)
+    @Get("AddSponzor:id")
+    public AddSponzor(@Request() req , @Param('id') id:string)
+    {
+        id = id.substring(1,id.length)
+        if(req)
+        return this.MyTeamService.AddSponzor(req.user.id,parseInt(id)) 
+    }
 
     @UseGuards(JwtAuthGuard)
-    @Get("CheckPlayer")
-    public CheckPlayer(@Request() req,PlayerNick:string)
+    @Get("RemoveSponzor")
+    public RemoveSponzor(@Request() req)
     {
-        this.MyTeamService.CheckPlayer
+        if(req)
+        return this.MyTeamService.RemoveSponzor(req.user.id) 
     }
+
 
 }
