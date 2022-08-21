@@ -1,5 +1,5 @@
 import { Players } from 'src/players/entities/players.entity';
-import { Sponzor } from 'src/sponzor/entities/sponzor.entities';
+import { Sponzor } from 'src/sponzor/entities/sponzor.entity';
 import { MyTeamController } from './my-team.controller';
 import { User } from 'src/user/entities/user.entity';
 import { MyTeam } from './entities/Myteam.entity';

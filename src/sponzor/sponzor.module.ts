@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SponzorService } from './sponzor.service';
-import { Sponzor } from './entities/sponzor.entities';
+import { Sponzor } from './entities/sponzor.entity';
 import { SponzorController } from './sponzor.controller';
 
 

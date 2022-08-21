@@ -19,6 +19,6 @@ export class User
     @Column({ type: 'text', nullable: false, unique: false })
     money:number
 
-    @OneToOne(type=>MyTeam ,MyTeam=>MyTeam.Owner,)
+    @OneToOne(type=>MyTeam ,MyTeam=>MyTeam.Owner)
     MyTeam:MyTeam;
 }

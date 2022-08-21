@@ -1,5 +1,5 @@
 import { Players } from 'src/players/entities/players.entity';
-import { Sponzor } from 'src/sponzor/entities/sponzor.entities';
+import { Sponzor } from 'src/sponzor/entities/sponzor.entity';
 import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MyTeam } from './entities/Myteam.entity';
@@ -46,8 +46,10 @@ export class MyTeamService {
     {
       const Owner = await this.UserRepo.findOne({where:{id:UserID}})
       const Team = await this.MyteamRepo.findOne({where:{Owner:Owner}})
-      Owner.money = Owner.money - Team.MySponzor.money
+ 
+      Owner.money = Owner.money - await (await this.SponzorRepo.findOne({where:{MyTeam:Team}})).money
       Team.MySponzor = null;
+  
       await this.UserRepo.save(Owner);
       await this.MyteamRepo.save(Team)
       return true;

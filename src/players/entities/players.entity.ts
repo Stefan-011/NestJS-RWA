@@ -34,7 +34,7 @@ export class Players
     @Column({ type: 'text', nullable: false, unique: false })
     price:number
 
-    @ManyToOne(type=>MyTeam, MyTeam => MyTeam.MyPlayers)
+    @ManyToOne(type=>MyTeam, MyTeam => MyTeam.MyPlayers, {onDelete:'CASCADE'})
     MyTeam: MyTeam;
 }
 

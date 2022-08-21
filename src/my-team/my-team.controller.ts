@@ -48,6 +48,7 @@ export class MyTeamController {
     @Get("RemoveSponzor")
     public RemoveSponzor(@Request() req)
     {
+        
         if(req)
         return this.MyTeamService.RemoveSponzor(req.user.id) 
     }

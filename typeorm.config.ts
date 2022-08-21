@@ -1,6 +1,6 @@
 import { MyTeam } from "src/my-team/entities/Myteam.entity";
 import { Players } from "src/players/entities/players.entity";
-import { Sponzor } from "src/sponzor/entities/sponzor.entities";
+import { Sponzor } from "src/sponzor/entities/sponzor.entity";
 import { User } from "src/user/entities/user.entity";
 import { DataSourceOptions } from "typeorm";
 
