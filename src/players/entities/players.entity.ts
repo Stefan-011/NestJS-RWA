@@ -1,8 +1,9 @@
 import { MyTeam } from "src/my-team/entities/Myteam.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Players{
+export class Players
+{
     @PrimaryGeneratedColumn()
     id:number;
 

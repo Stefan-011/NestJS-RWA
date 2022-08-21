@@ -2,7 +2,8 @@ import { MyTeam } from "src/my-team/entities/Myteam.entity";
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Sponzor{
+export class Sponzor
+{
     @PrimaryGeneratedColumn()
     id:number;
 
@@ -13,7 +14,7 @@ export class Sponzor{
     img:string
 
     @Column({ type: 'text', nullable: false, unique: false })
-    money:string
+    money:number
 
     @OneToMany(type=>MyTeam, MyTeam => MyTeam.MySponzor)
     MyTeam: MyTeam[];

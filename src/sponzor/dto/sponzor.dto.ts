@@ -1,8 +1,8 @@
 
-export class SponzorDto{
-   
+export class SponzorDto
+{
     id:number;
-    name:string;
     img:string;
-    money:string;
+    name:string;
+    money:number;   
 }

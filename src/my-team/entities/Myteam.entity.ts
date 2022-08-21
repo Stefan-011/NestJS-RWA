@@ -1,7 +1,7 @@
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Players } from "src/players/entities/players.entity";
 import { Sponzor } from "src/sponzor/entities/sponzor.entities";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class MyTeam{
@@ -21,5 +21,4 @@ export class MyTeam{
     @JoinColumn()
     Owner:User;
     
- // Veze
 }

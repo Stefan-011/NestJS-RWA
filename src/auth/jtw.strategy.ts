@@ -1,18 +1,17 @@
-import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
+import { Injectable } from "@nestjs/common";
 import { ExtractJwt } from "passport-jwt";
 import { Strategy } from "passport-jwt";
+import { JWTConst } from "./model/JWTConst";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy)
 {
-
-    // Za zastitu funkcija
     constructor() {
         super({
             jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration:false,
-            secretOrKey:'SECRET'
+            secretOrKey: JWTConst.secret,
         });
     }
 

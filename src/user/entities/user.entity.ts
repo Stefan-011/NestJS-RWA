@@ -2,7 +2,8 @@ import { MyTeam } from "src/my-team/entities/Myteam.entity";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class User{
+export class User
+{
     @PrimaryGeneratedColumn()
     id:number;
 
