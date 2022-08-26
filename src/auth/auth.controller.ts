@@ -7,7 +7,7 @@ import { UseGuards } from "@nestjs/common";
 @Controller('auth')
 export class AuthController {
 
-    constructor(private AuthService:AuthService,){}//private LS:LocalStrategy
+    constructor(private AuthService:AuthService,){}
 
     @UseGuards(LocalAuthGuard)
     @Post('login')

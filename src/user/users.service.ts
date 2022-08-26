@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt'
 export class UsersService {
     constructor(@InjectRepository(User) private UserRepo: Repository<User>) {}
    
-async CreateUser(UserDto:UserDto)//:Promise<UserDto | undefined>
+async CreateUser(UserDto:UserDto)
     {
         const {username, password, email } = UserDto
        
