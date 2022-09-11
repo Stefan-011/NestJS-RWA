@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SponzorDto } from './dto/sponzor.dto';
 import { SponzorService } from './sponzor.service';
@@ -16,5 +25,18 @@ export class SponzorController {
   @Post('CreateSponzor')
   public CreateSponzor(@Body() SponzorDto: SponzorDto) {
     return this.SponzorService.CreateSponzor(SponzorDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('DeleteSponzor/:id')
+  public DeleteSponzor(@Param('id') id: string) {
+    id = id.substring(1, id.length);
+    return this.SponzorService.DeleteSponzor(parseInt(id));
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('EditSponzor')
+  public EditSponzor(@Body() SponzorDto: SponzorDto) {
+    return this.SponzorService.EditSponzor(SponzorDto);
   }
 }

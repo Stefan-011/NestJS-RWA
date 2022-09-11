@@ -10,6 +10,7 @@ import {
 import { Players } from 'src/players/entities/players.entity';
 import { Sponzor } from 'src/sponzor/entities/sponzor.entity';
 import { User } from 'src/user/entities/user.entity';
+import { TeamType } from 'src/Enums/TeamType';
 
 @Entity()
 export class MyTeam {
@@ -36,4 +37,7 @@ export class MyTeam {
   @ManyToOne((type) => User, (User) => User.MyTeam, { onDelete: 'CASCADE' })
   @JoinColumn()
   Creator: User;
+
+  @Column({ nullable: false })
+  TeamType: TeamType;
 }

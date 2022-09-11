@@ -4,10 +4,11 @@ import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MyTeam } from './entities/Myteam.entity';
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { MyTeamDto } from './dto/MyTeamDto';
 import { ShopErrorMsg } from 'src/Enums/ShopErrorMsg';
 import { PanelErrorMessage } from 'src/Enums/PanelErrorMessage';
+import { TeamType } from 'src/Enums/TeamType';
 
 @Injectable()
 export class MyTeamService {
@@ -105,7 +106,7 @@ export class MyTeamService {
         Package: null,
       };
 
-    if (FoundOwner.money < ThatPlayer.price)
+    if (ThatPlayer.price > FoundOwner.money + 1)
       return {
         Server_response: ShopErrorMsg.NoEnoughMoneyError,
         Package: null,
@@ -159,6 +160,7 @@ export class MyTeamService {
     NewTeam.Owner = Owner;
     NewTeam.name = Owner.username;
     NewTeam.MyPlayers = [];
+    NewTeam.TeamType = TeamType.USER_TEAM;
     return await this.MyteamRepo.save(NewTeam);
   }
 
@@ -167,7 +169,7 @@ export class MyTeamService {
     const TeamCheck = await this.MyteamRepo.findOne({
       where: { name: TeamName.name },
     });
-
+    console.log(TeamName.name);
     if (TeamCheck)
       return {
         Server_response: PanelErrorMessage.TeamAlreadyExists,
@@ -175,6 +177,7 @@ export class MyTeamService {
     const NewTeam = new MyTeam();
     NewTeam.name = TeamName.name;
     NewTeam.Creator = ADMIN;
+    NewTeam.TeamType = TeamType.DEFAULT_TEAM;
     await this.MyteamRepo.save(NewTeam);
     return {
       Server_response: PanelErrorMessage.none,
@@ -184,5 +187,27 @@ export class MyTeamService {
   async DeleteTeam(TeamID: number) {
     const DeleteTeam = await this.MyteamRepo.findOne({ where: { id: TeamID } });
     return await this.MyteamRepo.remove(DeleteTeam);
+  }
+
+  async GetCreatedTeams() {
+    const ALL_TEAMS = await this.MyteamRepo.find({
+      where: { TeamType: TeamType.DEFAULT_TEAM },
+    });
+
+    return {
+      Package: ALL_TEAMS,
+      Server_respose: PanelErrorMessage.none,
+    };
+  }
+
+  async EditTeam(TeamDto: MyTeamDto) {
+    const Team = await this.MyteamRepo.findOne({ where: { id: TeamDto.id } });
+    console.log(TeamDto);
+    Team.name = TeamDto.name;
+
+    await this.MyteamRepo.save(Team);
+    return {
+      Server_respose: PanelErrorMessage.none,
+    };
   }
 }

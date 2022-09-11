@@ -55,4 +55,17 @@ export class MyTeamController {
   async CreateTeam(@Request() req, @Body() TeamDto: MyTeamDto) {
     return this.MyTeamService.CreateTeam(TeamDto, req.user.id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('EditTeam')
+  async EditTeam(@Body() TeamDto: MyTeamDto) {
+    console.log('Team');
+    return this.MyTeamService.EditTeam(TeamDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('GetCreatedTeams')
+  async GetCreatedTeams() {
+    return this.MyTeamService.GetCreatedTeams();
+  }
 }
