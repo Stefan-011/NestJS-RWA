@@ -25,7 +25,7 @@ export class User {
   @Column({ type: 'text', nullable: false, unique: false })
   money: number;
 
-  @Column({ type: 'text', nullable: false, unique: false })
+  @Column({ nullable: false, unique: false })
   role: Role;
 
   @OneToOne((type) => MyTeam, (MyTeam) => MyTeam.Owner)

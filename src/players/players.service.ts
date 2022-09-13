@@ -5,7 +5,6 @@ import { Players } from './entities/players.entity';
 import { PlayerDto } from './dto/players.dto';
 import { MyTeam } from 'src/my-team/entities/Myteam.entity';
 import { PanelErrorMessage } from 'src/Enums/PanelErrorMessage';
-import e from 'express';
 
 @Injectable()
 export class PlayersService {
@@ -72,6 +71,8 @@ export class PlayersService {
 
   async DeletePlayer(id: number) {
     const ToRemove = await this.PlayerRepo.findOne({ where: { id: id } });
+
+    console.log(ToRemove);
     await this.PlayerRepo.delete(ToRemove);
     return {
       Server_respose: PanelErrorMessage.none,

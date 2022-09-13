@@ -7,46 +7,39 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-
 @Injectable()
 export class AuthService {
+  constructor(
+    private UserService: UsersService,
+    private jwtService: JwtService,
+    private MyTeamService: MyTeamService,
+  ) {}
 
-    constructor(
-        private UserService:UsersService,
-        private jwtService:JwtService, 
-        private MyTeamService:MyTeamService 
-        ) {}
+  async validateUser(email: string, passwrd: string) {
+    const user = await this.UserService.FindUser(email);
+    if (!user && !user.password) throw new Error('Korisnik nije pronadjen.');
 
-    async validateUser(email:string , passwrd:string)
-    {
-        const user = await this.UserService.FindUser(email);
-        if(!user && !user.password)
-           throw new Error('Korisnik nije pronadjen.');
+    if (!(await bcrypt.compare(passwrd, user.password)))
+      throw new Error('Uneli ste pogresnu sifru.');
 
-       if(!await bcrypt.compare(passwrd, user.password))
-          throw new Error('Uneli ste pogresnu sifru.');
+    const { password, ...rest } = user;
+    return rest;
+  }
 
-         const {password, ...rest} = user;
-         return rest;
-    }
+  async login(user: User) {
+    const payload = { email: user.email, sub: user.id, role: user.role };
+    const { email, ...data } = user;
+    return {
+      data,
+      access_token: this.jwtService.sign(payload, { secret: JWTConst.secret }),
+    };
+  }
 
-    async login(user:User)
-    {
-        const payload = {email:user.email, sub:user.id};
-        const  {email, ... data} = user;
-        return {
-            data,
-            access_token: this.jwtService.sign( payload, { secret: JWTConst.secret } ), 
-        }
-    }
+  async register(UserDto: UserDto) {
+    if (!UserDto) throw Error('Podaci nisu validni');
 
-    async register(UserDto: UserDto)
-    {
-        if(!UserDto)
-        throw Error("Podaci nisu validni")
-
-        const { password, ...rest } = await this.UserService.CreateUser(UserDto);   
-        await this.MyTeamService.CreateMyTeam(rest.id);
-        return true;    
-    }   
+    const { password, ...rest } = await this.UserService.CreateUser(UserDto);
+    await this.MyTeamService.CreateMyTeam(rest.id);
+    return true;
+  }
 }

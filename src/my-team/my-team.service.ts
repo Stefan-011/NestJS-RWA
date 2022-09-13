@@ -186,7 +186,10 @@ export class MyTeamService {
 
   async DeleteTeam(TeamID: number) {
     const DeleteTeam = await this.MyteamRepo.findOne({ where: { id: TeamID } });
-    return await this.MyteamRepo.remove(DeleteTeam);
+    await this.MyteamRepo.remove(DeleteTeam);
+    return {
+      Server_respose: PanelErrorMessage.none,
+    };
   }
 
   async GetCreatedTeams() {

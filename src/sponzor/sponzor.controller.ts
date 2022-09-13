@@ -9,32 +9,36 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/role.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/Enums/Role';
 import { SponzorDto } from './dto/sponzor.dto';
 import { SponzorService } from './sponzor.service';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sponzor')
 export class SponzorController {
   constructor(private SponzorService: SponzorService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('GetAll')
   public GetAll() {
     return this.SponzorService.GetAll();
   }
-  @UseGuards(JwtAuthGuard)
+
+  @Roles(Role.ADMIN)
   @Post('CreateSponzor')
   public CreateSponzor(@Body() SponzorDto: SponzorDto) {
     return this.SponzorService.CreateSponzor(SponzorDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Delete('DeleteSponzor/:id')
   public DeleteSponzor(@Param('id') id: string) {
     id = id.substring(1, id.length);
     return this.SponzorService.DeleteSponzor(parseInt(id));
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Put('EditSponzor')
   public EditSponzor(@Body() SponzorDto: SponzorDto) {
     return this.SponzorService.EditSponzor(SponzorDto);

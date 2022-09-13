@@ -6,11 +6,17 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/role.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/Enums/Role';
 import { PlayerDto } from './dto/players.dto';
 import { PlayersService } from './players.service';
 
 @Controller('players')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class PlayersController {
   constructor(private PlayersService: PlayersService) {}
 
@@ -25,7 +31,7 @@ export class PlayersController {
     id = id.substring(1, id.length);
     return this.PlayersService.GetPlayerByID(parseInt(id));
   }
-
+  @Roles(Role.ADMIN)
   @Post('CreatePlayer/:TeamID')
   public CreatePlayer(
     @Body() PlayerDto: PlayerDto,
@@ -40,7 +46,7 @@ export class PlayersController {
     TeamID = TeamID.substring(1, TeamID.length);
     return this.PlayersService.GetPlayerByTeamID(parseInt(TeamID));
   }
-
+  @Roles(Role.ADMIN)
   @Put('EditPlayer/:TeamID')
   public EditPlayer(
     @Body() Player: PlayerDto,
@@ -49,9 +55,11 @@ export class PlayersController {
     TeamID = TeamID.substring(1, TeamID.length);
     return this.PlayersService.EditPlayer(Player, parseInt(TeamID));
   }
-
-  @Delete('DeletePlayer/:PlayerID')
+  @Roles(Role.ADMIN)
+  @Delete('DeletePlayer:PlayerID')
   public DeletePlayer(@Param('PlayerID') PlayerID: string) {
+    PlayerID = PlayerID.substring(1, PlayerID.length);
+    console.log();
     return this.PlayersService.DeletePlayer(parseInt(PlayerID));
   }
 }

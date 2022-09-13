@@ -21,12 +21,12 @@ export class MyTeam {
   name: string;
 
   @ManyToOne((type) => Sponzor, (Sponzor) => Sponzor.MyTeam, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   MySponzor: Sponzor;
 
   @OneToMany((type) => Players, (Players) => Players.MyTeam, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   MyPlayers: Players[];
 

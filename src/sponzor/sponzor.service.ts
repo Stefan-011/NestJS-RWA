@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { elementAt } from 'rxjs';
 import { PanelErrorMessage } from 'src/Enums/PanelErrorMessage';
+import { MyTeam } from 'src/my-team/entities/Myteam.entity';
+import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { SponzorDto } from './dto/sponzor.dto';
 import { Sponzor } from './entities/sponzor.entity';
@@ -9,6 +12,8 @@ import { Sponzor } from './entities/sponzor.entity';
 export class SponzorService {
   constructor(
     @InjectRepository(Sponzor) private sponzorRepo: Repository<Sponzor>,
+    @InjectRepository(MyTeam) private MyTeamRepo: Repository<MyTeam>,
+    @InjectRepository(User) private UserRepo: Repository<User>,
   ) {}
 
   async GetAll() {
@@ -43,10 +48,17 @@ export class SponzorService {
       where: { id: SponzorId },
     });
 
-    /*if(SponzorForDelete)
-    return {
-      Server_response:PanelErrorMessage.
-    }*/
+    const Teams = await this.MyTeamRepo.find({
+      where: { MySponzor: SponzorForDelete },
+    });
+
+    for (let Team of Teams) {
+      let User = await this.UserRepo.findOne({ where: { MyTeam: Team } });
+      if (User.money > SponzorForDelete.money)
+        User.money = User.money - SponzorForDelete.money;
+      else User.money = 0;
+    }
+
     await this.sponzorRepo.remove(SponzorForDelete);
 
     return {

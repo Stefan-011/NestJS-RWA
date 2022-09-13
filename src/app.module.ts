@@ -20,11 +20,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth/auth.controller';
 import { JwtStrategy } from './auth/jtw.strategy';
 
-
-
 @Module({
-  imports: [UserModule,TypeOrmModule.forRoot(typeOrmConfig), PlayersModule, SponzorModule, MyTeamModule, AuthModule,JwtModule],
-  controllers: [AppController, MyTeamController,AuthController],
-  providers: [AppService, AuthService,JwtStrategy],
+  imports: [
+    UserModule,
+    TypeOrmModule.forRoot(typeOrmConfig),
+    PlayersModule,
+    SponzorModule,
+    MyTeamModule,
+    AuthModule,
+    JwtModule,
+  ],
+  controllers: [AppController, MyTeamController, AuthController],
+  providers: [AppService, AuthService, JwtStrategy],
 })
 export class AppModule {}
