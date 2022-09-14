@@ -59,7 +59,6 @@ export class PlayersController {
   @Delete('DeletePlayer:PlayerID')
   public DeletePlayer(@Param('PlayerID') PlayerID: string) {
     PlayerID = PlayerID.substring(1, PlayerID.length);
-    console.log();
     return this.PlayersService.DeletePlayer(parseInt(PlayerID));
   }
 }

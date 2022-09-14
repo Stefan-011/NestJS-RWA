@@ -50,6 +50,12 @@ export class PlayersService {
     const ToEdit = await this.PlayerRepo.findOne({
       where: { id: PlayerDto.id },
     });
+
+    if (ToEdit == null)
+      return {
+        Server_response: PanelErrorMessage.PlayersNotFound,
+      };
+
     const Team = await this.MyteamRepo.findOne({ where: { id: TeamID } });
 
     ToEdit.img = PlayerDto.img;
@@ -65,17 +71,20 @@ export class PlayersService {
 
     await this.PlayerRepo.save(ToEdit);
     return {
-      Server_respose: PanelErrorMessage.none,
+      Server_response: PanelErrorMessage.none,
     };
   }
 
   async DeletePlayer(id: number) {
     const ToRemove = await this.PlayerRepo.findOne({ where: { id: id } });
 
-    console.log(ToRemove);
+    if (ToRemove == null)
+      return {
+        Server_response: PanelErrorMessage.PlayersNotFound,
+      };
     await this.PlayerRepo.delete(ToRemove);
     return {
-      Server_respose: PanelErrorMessage.none,
+      Server_response: PanelErrorMessage.none,
     };
   }
 

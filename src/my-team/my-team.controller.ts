@@ -33,34 +33,40 @@ export class MyTeamController {
     id = id.substring(1, id.length);
     if (req) return this.MyTeamService.AddPlayer(req.user.id, parseInt(id));
   }
+
   @Roles(Role.USER)
   @Delete('RemovePlayer:id')
   public RemovePlayer(@Request() req, @Param('id') id: string) {
     id = id.substring(1, id.length);
     if (req) return this.MyTeamService.RemovePlayer(req.user.id, parseInt(id));
   }
+
   @Roles(Role.USER)
   @Put('AddSponzor:id')
   public AddSponzor(@Request() req, @Param('id') id: string) {
     id = id.substring(1, id.length);
     if (req) return this.MyTeamService.AddSponzor(req.user.id, parseInt(id));
   }
+
   @Roles(Role.USER)
   @Put('RemoveSponzor')
   public RemoveSponzor(@Request() req) {
     if (req) return this.MyTeamService.RemoveSponzor(req.user.id);
   }
+
   @Roles(Role.ADMIN)
   @Post('CreateTeam')
   async CreateTeam(@Request() req, @Body() TeamDto: MyTeamDto) {
     return this.MyTeamService.CreateTeam(TeamDto, req.user.id);
   }
+
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard)
   @Put('EditTeam')
   async EditTeam(@Body() TeamDto: MyTeamDto) {
     return this.MyTeamService.EditTeam(TeamDto);
   }
+
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard)
   @Delete('DeleteTeam:id')

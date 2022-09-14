@@ -22,7 +22,7 @@ export class UsersController {
   public GetMyProfile(@Request() req) {
     if (req) return this.UserService.FindMyProfile(req.user.email);
   }
-
+  @Roles(Role.USER)
   @Get('SaveChanges:money')
   public SaveChanges(@Request() req, @Param('money') money: number) {
     return this.UserService.SaveChanges(req.user.id, money);

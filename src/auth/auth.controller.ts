@@ -1,10 +1,8 @@
-import { Body, Controller, Post, Request, SetMetadata } from '@nestjs/common';
+import { Body, Controller, Post, Request } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 import { UserDto } from 'src/user/dto/user.dto';
 import { UseGuards } from '@nestjs/common';
-import { Role } from 'src/Enums/Role';
-import { Roles } from './roles.decorator';
 
 @Controller('auth')
 export class AuthController {

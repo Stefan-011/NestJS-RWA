@@ -48,6 +48,11 @@ export class SponzorService {
       where: { id: SponzorId },
     });
 
+    if (SponzorForDelete == null)
+      return {
+        Server_response: PanelErrorMessage.SponzorNotFound,
+      };
+
     const Teams = await this.MyTeamRepo.find({
       where: { MySponzor: SponzorForDelete },
     });
@@ -70,6 +75,12 @@ export class SponzorService {
     const SponzorForEdit = await this.sponzorRepo.findOne({
       where: { id: SponzorDto.id },
     });
+
+    if (SponzorForEdit == null)
+      return {
+        Server_response: PanelErrorMessage.SponzorNotFound,
+      };
+
     SponzorForEdit.img = SponzorDto.img;
     SponzorForEdit.money = SponzorDto.money;
     SponzorForEdit.name = SponzorDto.name;

@@ -28,18 +28,16 @@ export class AuthService {
 
   async login(user: User) {
     const payload = { email: user.email, sub: user.id, role: user.role };
-    const { email, ...data } = user;
+    const { email, ...user_data } = user;
     return {
-      data,
+      user_data,
       access_token: this.jwtService.sign(payload, { secret: JWTConst.secret }),
     };
   }
 
   async register(UserDto: UserDto) {
     if (!UserDto) throw Error('Podaci nisu validni');
-
     const { password, ...rest } = await this.UserService.CreateUser(UserDto);
-    await this.MyTeamService.CreateMyTeam(rest.id);
-    return true;
+    return await this.MyTeamService.CreateMyTeam(rest.id);
   }
 }

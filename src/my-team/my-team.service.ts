@@ -36,6 +36,7 @@ export class MyTeamService {
       where: { Owner: Owner },
       relations: ['MySponzor'],
     });
+
     let CurrentSponzor = await this.SponzorRepo.findOne({
       where: { MyTeam: Team },
     });
@@ -49,6 +50,7 @@ export class MyTeamService {
     const Sponzor = await this.SponzorRepo.findOne({
       where: { id: SponzorID },
     });
+
     Team.MySponzor = Sponzor;
     Owner.money = +Owner.money + +Sponzor.money;
     await this.UserRepo.save(Owner);
@@ -63,9 +65,11 @@ export class MyTeamService {
   async RemoveSponzor(UserID: number) {
     const Owner = await this.UserRepo.findOne({ where: { id: UserID } });
     const Team = await this.MyteamRepo.findOne({ where: { Owner: Owner } });
+
     let CurrentSponzor = await this.SponzorRepo.findOne({
       where: { MyTeam: Team },
     });
+
     let PayBackMoney = CurrentSponzor.money;
     if (PayBackMoney > Owner.money)
       return {
@@ -138,7 +142,7 @@ export class MyTeamService {
     await this.MyteamRepo.save(Team);
     await this.PlayerRepo.save(NewPlayer);
     return {
-      Server_response: ShopErrorMsg.PlayerAlreadyInTeamError,
+      Server_response: ShopErrorMsg.none,
       Package: NewPlayer,
     };
   }
@@ -169,11 +173,12 @@ export class MyTeamService {
     const TeamCheck = await this.MyteamRepo.findOne({
       where: { name: TeamName.name },
     });
-    console.log(TeamName.name);
+
     if (TeamCheck)
       return {
         Server_response: PanelErrorMessage.TeamAlreadyExists,
       };
+
     const NewTeam = new MyTeam();
     NewTeam.name = TeamName.name;
     NewTeam.Creator = ADMIN;
@@ -188,7 +193,7 @@ export class MyTeamService {
     const DeleteTeam = await this.MyteamRepo.findOne({ where: { id: TeamID } });
     await this.MyteamRepo.remove(DeleteTeam);
     return {
-      Server_respose: PanelErrorMessage.none,
+      Server_response: PanelErrorMessage.none,
     };
   }
 
@@ -199,18 +204,18 @@ export class MyTeamService {
 
     return {
       Package: ALL_TEAMS,
-      Server_respose: PanelErrorMessage.none,
+      Server_response: PanelErrorMessage.none,
     };
   }
 
   async EditTeam(TeamDto: MyTeamDto) {
     const Team = await this.MyteamRepo.findOne({ where: { id: TeamDto.id } });
-    console.log(TeamDto);
+
     Team.name = TeamDto.name;
 
     await this.MyteamRepo.save(Team);
     return {
-      Server_respose: PanelErrorMessage.none,
+      Server_response: PanelErrorMessage.none,
     };
   }
 }
