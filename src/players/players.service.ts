@@ -23,6 +23,14 @@ export class PlayersService {
 
   async CreatePlayer(PlayerDto: PlayerDto, TeamID: number) {
     const Team = await this.MyteamRepo.findOne({ where: { id: TeamID } });
+    const NumOfPlayers = await this.PlayerRepo.findAndCount({
+      where: { MyTeam: Team },
+    });
+
+    if (NumOfPlayers[1] == 5)
+      return {
+        Server_response: PanelErrorMessage.TeamIsFull,
+      };
 
     const NewPlayer = new Players();
     NewPlayer.img = PlayerDto.img;
@@ -58,6 +66,15 @@ export class PlayersService {
 
     const Team = await this.MyteamRepo.findOne({ where: { id: TeamID } });
 
+    const NumOfPlayers = await this.PlayerRepo.findAndCount({
+      where: { team: Team.name },
+    });
+
+    if (NumOfPlayers[1] == 5)
+      return {
+        Server_response: PanelErrorMessage.TeamIsFull,
+      };
+
     ToEdit.img = PlayerDto.img;
     ToEdit.impact = PlayerDto.impact;
     ToEdit.kd = PlayerDto.kd;
@@ -90,9 +107,9 @@ export class PlayersService {
 
   async GetPlayerByTeamID(id: number) {
     const Team = await this.MyteamRepo.findOne({ where: { id: id } });
-    let PlayersFromTeam;
+    let PlayersFromTeam: Players[] = [];
     if (Team)
-      PlayersFromTeam = this.PlayerRepo.find({ where: { MyTeam: Team } });
+      PlayersFromTeam = await this.PlayerRepo.find({ where: { MyTeam: Team } });
     else
       return {
         Server_response: PanelErrorMessage.PlayersNotFound,

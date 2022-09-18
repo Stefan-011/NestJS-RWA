@@ -31,6 +31,7 @@ export class PlayersController {
     id = id.substring(1, id.length);
     return this.PlayersService.GetPlayerByID(parseInt(id));
   }
+
   @Roles(Role.ADMIN)
   @Post('CreatePlayer/:TeamID')
   public CreatePlayer(
@@ -46,6 +47,7 @@ export class PlayersController {
     TeamID = TeamID.substring(1, TeamID.length);
     return this.PlayersService.GetPlayerByTeamID(parseInt(TeamID));
   }
+
   @Roles(Role.ADMIN)
   @Put('EditPlayer/:TeamID')
   public EditPlayer(
@@ -55,6 +57,7 @@ export class PlayersController {
     TeamID = TeamID.substring(1, TeamID.length);
     return this.PlayersService.EditPlayer(Player, parseInt(TeamID));
   }
+
   @Roles(Role.ADMIN)
   @Delete('DeletePlayer:PlayerID')
   public DeletePlayer(@Param('PlayerID') PlayerID: string) {

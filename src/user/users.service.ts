@@ -44,8 +44,8 @@ export class UsersService {
   }
 
   async FindMyProfile(email: string) {
-    const { password, ...data } = await this.FindUser(email);
-    return data;
+    const { password, ...user } = await this.FindUser(email);
+    return user;
   }
 
   async SaveChanges(id: number, money: number) {
