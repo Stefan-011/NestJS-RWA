@@ -55,6 +55,7 @@ export class PlayersService {
   }
 
   async EditPlayer(PlayerDto: PlayerDto, TeamID) {
+    let ItsInTheTeam = false;
     const ToEdit = await this.PlayerRepo.findOne({
       where: { id: PlayerDto.id },
     });
@@ -70,7 +71,10 @@ export class PlayersService {
       where: { team: Team.name },
     });
 
-    if (NumOfPlayers[1] == 5)
+    NumOfPlayers[0].find((player) => {
+      if (player.id == ToEdit.id) ItsInTheTeam = true;
+    });
+    if (NumOfPlayers[1] == 5 && ItsInTheTeam == false)
       return {
         Server_response: PanelErrorMessage.TeamIsFull,
       };

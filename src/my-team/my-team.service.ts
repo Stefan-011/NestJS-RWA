@@ -57,7 +57,7 @@ export class MyTeamService {
     await this.MyteamRepo.save(Team);
 
     return {
-      Server_response: ShopErrorMsg.none,
+      Server_response: ShopErrorMsg.SponzorAccepted,
       Package: Sponzor,
     };
   }
