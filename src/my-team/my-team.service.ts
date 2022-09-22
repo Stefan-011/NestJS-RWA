@@ -110,7 +110,7 @@ export class MyTeamService {
         Package: null,
       };
 
-    if (ThatPlayer.price > FoundOwner.money + 1)
+    if (ThatPlayer.price > +FoundOwner.money + +1)
       return {
         Server_response: ShopErrorMsg.NoEnoughMoneyError,
         Package: null,
