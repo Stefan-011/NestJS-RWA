@@ -71,7 +71,6 @@ export class MyTeamService {
     });
 
     let PayBackMoney = CurrentSponzor.money;
-    console.log(PayBackMoney + '<' + Owner.money);
     if (+PayBackMoney > +Owner.money)
       return {
         Server_response: ShopErrorMsg.BreakingSponzorDealError,
